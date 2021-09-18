@@ -1,21 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+ 
+import React, { useState} from 'react';
+import { Button, StyleSheet, Text, View,TextInput, ScrollView, FlatList } from 'react-native';
+
+import GoalItem from './components/GoalItem'
+import GoalInput from './components/GoalInput'
 
 export default function App() {
+
+  const [enterGoal, setEnterGoal ] = useState('');
+  const [courseGoals, setCourseGoal] =  useState([]);
+
+  
+
+  const addGoalHandler = goalTitle =>{
+    // console.log(enterGoal);
+    setCourseGoal(currentGoal =>[
+      ...currentGoal, 
+      { id: Math.random().toString(), value: goalTitle}]);
+  }
+
+ 
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={styles.container} >
+      {/* form  */}
+      <GoalInput onGoalAdd={addGoalHandler} />
+
+
+
+      {/* List */}
+
+      <FlatList 
+        keyExtractor={(item, index) => index.id }
+        style={styles.scrollView} 
+        data={courseGoals} 
+        renderItem={itemData => <GoalItem title={itemData.item.value} />}
+        />
+
+
+      {/* <ScrollView style={styles.scrollView}>
+        {courseGoals.map((goal) => <View style={styles.listItem}><Text key={goal} >{goal}</Text></View>) }
+      </ScrollView> */}
+{/* 
+      <View style={styles.footer}>
+        <Text>Footer</Text>
+      </View> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  container:{
+    padding: 25,
+    backgroundColor: '#001219',
+    
   },
+  scrollView:{
+    marginBottom: 30
+  },
+ 
+  
 });
